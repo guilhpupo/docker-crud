@@ -1,0 +1,36 @@
+# docker-compose.yml
+version: '3'
+services:
+  postgres-database:
+    image: "postgres"    
+    env_file:
+      - database.env
+    volumes:
+      - ./database/:/var/lib/postgresql/data/
+    ports:
+      - 5432:5432
+
+  node-backend:
+    build: ./backend       
+    command: "npm start"
+    environment:
+      - DB_SERVER=postgres-database
+      - POSTGRES_DB=marketlist
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=root123
+    ports:
+      - 3000:3000
+    volumes:
+      - ./backend/:/usr/backend
+    links:
+      - postgres-database
+
+  react-frontend:
+    build: ./frontend   
+    command: "yarn start"
+    ports:
+      - 80:3000      
+    links:
+      - node-backend
+volumes:
+  database:
