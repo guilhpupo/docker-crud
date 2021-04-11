@@ -19,7 +19,7 @@ services:
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=root123
     ports:
-      - 3000:3000
+      - 3300:3000
     volumes:
       - ./backend/:/usr/backend
     links:
